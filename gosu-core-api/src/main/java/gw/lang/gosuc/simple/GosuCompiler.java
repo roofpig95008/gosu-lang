@@ -35,9 +35,16 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Constructor;
 import java.nio.channels.FileChannel;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
 import static gw.lang.gosuc.simple.ICompilerDriver.ERROR;
 import static gw.lang.gosuc.simple.ICompilerDriver.WARNING;
@@ -45,6 +52,183 @@ import static gw.lang.gosuc.simple.ICompilerDriver.WARNING;
 public class GosuCompiler implements IGosuCompiler {
   protected GosuInitialization _gosuInitialization;
   protected File _compilingSourceFile;
+
+  public static void main(String[] args) {
+//    log.debug("projectname=" + getProjectName());
+//    log.debug("src/srcdir=" + getSrcdir());
+//    log.debug("destdir=" + getDestdir());
+//    log.debug("failOnError=" + getFailOnError());
+//    log.debug("checkedArithmetic=" + isCheckedArithmetic());
+//    log.debug("_compileClasspath=" + _compileClasspath);
+
+    /*if(isCheckedArithmetic()) {
+      System.setProperty("checkedArithmetic", "true");
+    }*/
+    if(args.length != 5) {
+      System.err.println("GosuCompiler: Wrong parameters");
+      System.exit(-1);
+    }
+    /*
+       0: sourceRoots
+       1: classpath
+       2: outputPath
+       3: explicit file list
+       4: logger prefix
+     */
+    //List<String> sourceFolders, List<String> classpath, String outputPath
+    ICompilerDriver driver = new SoutCompilerDriver();
+    IGosuCompiler gosuc = new GosuCompiler();
+
+    List<String> classpath = new ArrayList<>();
+    classpath.addAll(getJreJars());
+    classpath.addAll(Arrays.asList(args[1].split(":")));
+//    classpath.addAll(getGosuJars());
+
+//    if(!getProjectName().isEmpty()) {sy
+//      startupMsg += " for " + getProjectName();
+//    }
+//    log.info(startupMsg);
+//    log.debug("\tsourceFolders:" + Arrays.asList(getSrcdir().list()));
+//    log.debug("\tclasspath:" + classpath);
+//    log.debug("\toutputPath:" + getDestdir().getAbsolutePath());
+
+    String[] srcRoots = args[0].split(":");
+
+    final String projectName = args[4];
+    String startupMsg = "Initializing Gosu compiler";
+    if(projectName.isEmpty()) {
+      startupMsg += " for " + projectName;
+    }
+    System.out.println(startupMsg);
+    
+    gosuc.initializeGosu(Arrays.asList(srcRoots), classpath, args[2]);
+
+//    log.debug("About to compile these files:");
+//    for(File file : compileList) {
+//      log.debug("\t" + file.getAbsolutePath());
+//    }
+
+    List<File> allGosuSources = new ArrayList<>();
+//    for(String srcRoot : srcRoots) {
+//      allGosuSources.addAll(getGosuSources(srcRoot));
+//    }
+    for(String sourceFile : args[3].split(":")) {
+      allGosuSources.add(new File(sourceFile));
+    }
+
+    for(File file : allGosuSources) {
+      try {
+        gosuc.compile(file, driver);
+      } catch (Exception e) {
+//        log.error(e.getMessage());
+        throw new RuntimeException(e);
+      }
+    }
+
+    gosuc.unitializeGosu();
+
+    List<String> warnings = ((SoutCompilerDriver) driver).getWarnings();
+    boolean errorsInCompilation = ((SoutCompilerDriver) driver).hasErrors();
+    List<String> errors = ((SoutCompilerDriver) driver).getErrors();
+
+    List<String> warningMessages = new ArrayList<>();
+    List<String> errorMessages = new ArrayList<>();
+
+    warnings.forEach(warning -> warningMessages.add("[WARNING] " + warning));
+    int numWarnings = warningMessages.size();
+
+    int numErrors = 0;
+    if(errorsInCompilation) {
+      errors.forEach(error -> errorMessages.add("[ERROR] " + error));
+      numErrors = errorMessages.size();
+    }
+
+    boolean hasWarningsOrErrors = numWarnings > 0 || errorsInCompilation;
+    StringBuilder sb;
+    sb = new StringBuilder();
+    sb.append(projectName.isEmpty() ? "Gosu compilation" : projectName);
+    sb.append(" completed");
+    if(hasWarningsOrErrors) {
+      sb.append(" with ");
+      if(numWarnings > 0) {
+        sb.append(numWarnings).append(" warning").append(numWarnings == 1 ? "" : 's');
+      }
+      if(errorsInCompilation) {
+        sb.append(numWarnings > 0 ? " and " : "");
+        sb.append(numErrors).append(" error").append(numErrors == 1 ? "" : 's');
+      }
+    } else {
+      sb.append(" successfully.");
+    }
+
+    if(hasWarningsOrErrors) {
+      //log.warn(sb.toString());
+      System.err.println(sb.toString());
+    } else {
+      System.out.println(sb.toString());
+    }
+
+    //log at most 100 warnings or errors
+    warningMessages.subList(0, Math.min(warningMessages.size(), 100)).forEach(System.out::println);
+    errorMessages.subList(0, Math.min(errorMessages.size(), 100)).forEach(System.err::println);
+
+    if(errorsInCompilation) {
+      System.err.println("Gosu compilation failed with errors; see compiler output for details.");
+      System.exit(1);
+//      if(getFailOnError()) {
+//        buildError("Gosu compilation failed with errors; see compiler output for details.");
+//      } else {
+//        log.warn("Gosu Compiler: Ignoring compilation failure(s) as 'failOnError' was set to false");
+//      }
+    }
+    //TODO any cleanup?
+  }
+
+  private static List<String> getGosuJars()
+  {
+    ///home/lboasso/.gradle/caches/modules-2/files-2.1/org.gosu-lang.gosu/gosu-core/1.10/596bf8615156116e83dfbd4933fce7bda934fdf4/gosu-core-1.10.jar
+    ///home/lboasso/.gradle/caches/modules-2/files-2.1/org.gosu-lang.gosu/gosu-core-api/1.10/106324fe0dd18c214f2af509c78382d59a289e7/gosu-core-api-1.10.jar
+    ///home/lboasso/.m2/repository/org/gosu-lang/gosu/managed/gw-asm-all/5.0.4/gw-asm-all-5.0.4.jar
+    //return Arrays.asList( "../lib/gosu-core-1.10.jar", "../lib/gosu-core-api-1.10.jar", "../lib/gw-asm-all-5.0.4.jar" );
+    return Arrays.asList( "/home/lboasso/projects/gosu-lang/gosu/target/gosu-1-X-SNAPSHOT-full/gosu-1-X-SNAPSHOT/lib/gosu-core-1-X-SNAPSHOT.jar",
+                          "/home/lboasso/projects/gosu-lang/gosu/target/gosu-1-X-SNAPSHOT-full/gosu-1-X-SNAPSHOT/lib/gosu-core-api-1-X-SNAPSHOT.jar",
+                          "/home/lboasso/projects/gosu-lang/gosu/target/gosu-1-X-SNAPSHOT-full/gosu-1-X-SNAPSHOT/lib/gw-asm-all-5.0.4.jar" );
+  }
+
+  /**
+   * Get all JARs from the lib directory of the System's java.home property
+   * @return List of absolute paths to all JRE libraries
+   */
+  private static List<String> getJreJars() {
+    String javaHome = System.getProperty("java.home");
+    java.nio.file.Path libsDir = FileSystems.getDefault().getPath(javaHome, "/lib");
+    try {
+      return Files.walk(libsDir)
+        .filter( path -> path.toFile().isFile())
+        .filter( path -> path.toString().endsWith(".jar"))
+        .map( java.nio.file.Path::toString )
+        .collect(Collectors.toList());
+    } catch (SecurityException | IOException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+  }
+
+//  private static List<File> getGosuSources(String src) {
+//    try {
+//      return Files.walk(Paths.get(src))
+//        .filter( path -> path.toFile().isFile())
+//        .filter(path -> {
+//          String fileName = path.toString();
+//          return fileName.endsWith(".gs") || fileName.endsWith(".gsx") ||
+//                fileName.endsWith(".gsp") || fileName.endsWith(".gst");})
+//        .map(java.nio.file.Path::toFile)
+//        .collect(Collectors.toList());
+//    } catch (SecurityException | IOException e) {
+//      e.printStackTrace();
+//      throw new RuntimeException(e);
+//    }
+//  }
 
   public boolean compile(File sourceFile, ICompilerDriver driver) throws Exception {
     _compilingSourceFile = sourceFile;
