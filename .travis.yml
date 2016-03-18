@@ -6,3 +6,9 @@ jdk:
 branches:
   only:
     - travis
+
+env:
+  - MAVEN_OPTS="-Xmx1g -DcheckedArithmetic=true"
+
+before_script:
+  - export TZ=America/Los_Angeles
