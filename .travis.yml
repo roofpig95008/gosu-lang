@@ -8,7 +8,8 @@ branches:
     - travis
 
 env:
-  - MAVEN_OPTS="-Xmx1g -DcheckedArithmetic=true"
+  - MAVEN_OPTS="-Xmx1g -DcheckedArithmetic=true" TZ="America/Los_Angeles"
 
-before_script:
-  - export TZ=America/Los_Angeles
+cache:
+  directories:
+    - $HOME/.m2
