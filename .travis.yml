@@ -15,6 +15,7 @@ before_install:
   - echo "MAVEN_OPTS='-DcheckedArithmetic=true -Xmx1g'" > ~/.mavenrc
   - export TZ="America/Los_Angeles"
   - date
+  - mvn -f gosu-test/pom.xml help:active-profiles -B -V
 
 # completely skip test compilation and execution for the install step
 # speeds up the build significantly since incremental compilation does not work
