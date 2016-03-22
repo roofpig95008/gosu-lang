@@ -1,5 +1,8 @@
 machine:
 
+  pre:
+    - echo "MAVEN_OPTS='-DcheckedArithmetic=true -Xmx1g'" > ~/.mavenrc
+
   timezone:
     America/Los_Angeles
 
@@ -8,14 +11,11 @@ machine:
       oraclejdk8
 
   environment:
-    JAVA_OPTS: "-Xmx1g"
-    MAVEN_OPTS: "-Xmx1g -DcheckedArithmetic=true"
     TERM: dumb
 
 dependencies:
   override:
-    # :go-offline will download too much; :resolve-plugins is as good as we can do up-front.
-    - mvn -B dependency:resolve-plugins
+    - mvn install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -B -V
 
 general:
   branches:
