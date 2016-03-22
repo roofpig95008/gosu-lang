@@ -12,8 +12,8 @@ cache:
     - $HOME/.m2
 
 before_install:
+  - echo "MAVEN_OPTS='-DcheckedArithmetic=true -Xmx1g'" > ~/.mavenrc
   - export TZ="America/Los_Angeles"
-  - echo "MAVEN_OPTS='-DcheckedArithmetic=true'" > ~/.mavenrc
   - date
 
 notifications:
