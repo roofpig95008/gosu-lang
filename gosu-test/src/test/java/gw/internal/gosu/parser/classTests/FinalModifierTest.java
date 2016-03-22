@@ -25,6 +25,7 @@ public class FinalModifierTest extends TestClass
     assertTrue( gsClass.isFinal() );
     assertTrue( gsClass.isValid() );
     assertTrue( gsClass.isFinal() );
+    fail();
   }
 
   private IGosuClassInternal loadClass(String s) {
