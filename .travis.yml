@@ -26,3 +26,5 @@ install: mvn -B install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true
 notifications:
   hipchat:
     secure: "MuBdpvekaX+4oorVi1B3tqJlb3znq7XCUDHOIh8gcmEOoXzxSMcuasL+VNisYILToxX7R0s9qA/k/lS7nMXuuzlf8FpWqkywxC2DUnwR8zzSdCj5edaH3Zb8x5tck84eAEF8bNoR7UusPmMXT1y1390za9FCdMMdkEosWf1nQm4="
+    template:
+      - '%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{message}'
