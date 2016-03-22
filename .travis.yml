@@ -8,7 +8,7 @@ branches:
     - travis
 
 env:
-  - MAVEN_OPTS="-Xmx1g -DcheckedArithmetic=true" TZ="America/Los_Angeles"
+  - TZ="America/Los_Angeles"
 
 cache:
   directories:
