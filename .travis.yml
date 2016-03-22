@@ -16,5 +16,9 @@ before_install:
   - export TZ="America/Los_Angeles"
   - date
 
+# completely skip test compilation and execution for the install step
+# speeds up the build significantly since incremental compilation does not work
+install: mvn install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -B -V
+
 notifications:
   hipchat: HIPCHAT_TOKEN@Gosu
