@@ -1,8 +1,5 @@
 machine:
 
-  pre:
-    - echo "MAVEN_OPTS='-DcheckedArithmetic=true -Xmx1g'" > ~/.mavenrc
-
   timezone:
     America/Los_Angeles
 
@@ -11,6 +8,8 @@ machine:
       oraclejdk8
 
   environment:
+    JAVA_OPTS: "-Xmx1g"
+    MAVEN_OPTS: "-Xmx1g -DcheckedArithmetic=true"
     TERM: dumb
 
 dependencies:
