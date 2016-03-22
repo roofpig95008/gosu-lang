@@ -14,6 +14,7 @@ class SpaceEfficientHashMapTest extends TestClass {
   }
   
   function testKeySetRemoveWhenList() {
+    fail intentionally
     var map = new SpaceEfficientHashMap(_mediumSizedMap)
     map.keySet().remove("b")
     assertEquals(new HashMap<String, Integer>() {"a" -> 1, "c" -> 3, "d" -> 4}, map)
