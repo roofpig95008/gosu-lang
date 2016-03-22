@@ -135,7 +135,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
               <useUnlimitedThreads>false</useUnlimitedThreads>
-              <parallel>true</parallel>
+              <parallel>all</parallel>
               <perCoreThreadCount>true</perCoreThreadCount>
               <threadCount>2</threadCount>
             </configuration>

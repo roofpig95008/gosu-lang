@@ -19,7 +19,9 @@ before_install:
 
 # completely skip test compilation and execution for the install step
 # speeds up the build significantly since incremental compilation does not work
-install: mvn install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -B -V
+install: mvn install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -B
+
+# script: mvn integration-test deploy -s settings.xml -B
 
 notifications:
   hipchat:
