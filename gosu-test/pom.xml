@@ -69,6 +69,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <argLine>-Dgw.tests.skip.knownbreak=true -DcheckedArithmetic=true</argLine>
+          <useUnlimitedThreads>true</useUnlimitedThreads>
           <includes>
             <include>gw/config*/**/*Test.class</include>
             <include>gw/internal*/**/*Test.class</include>
@@ -116,5 +117,32 @@
       </plugin>
     </plugins>
   </reporting>
+  
+  <profiles>
+    <profile>
+      <id>CI</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>env.CI</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <useUnlimitedThreads>false</useUnlimitedThreads>
+              <parallel>true</parallel>
+              <perCoreThreadCount>true</perCoreThreadCount>
+              <threadCount>2</threadCount>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   
 </project>
