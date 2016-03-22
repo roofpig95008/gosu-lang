@@ -22,4 +22,4 @@ install: mvn install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -B -V
 
 notifications:
   hipchat:
-    - secure: "dpCF44VNR3a7X16b85Pa6TrJF25UP6QQmOEXULxkzeMYSNGSEiMnja1GgjXqVq3mDJQKdisJr1aYqi6ZJeMdn917+vYSK/b2TiJDpPdsYRfXxI0oxNKN06SPwD1gQl7kB+JcHOEdq/HNwqm/QsRcah6Jy3FjQlxtnWmJiKbfAUk="
+    secure: "MuBdpvekaX+4oorVi1B3tqJlb3znq7XCUDHOIh8gcmEOoXzxSMcuasL+VNisYILToxX7R0s9qA/k/lS7nMXuuzlf8FpWqkywxC2DUnwR8zzSdCj5edaH3Zb8x5tck84eAEF8bNoR7UusPmMXT1y1390za9FCdMMdkEosWf1nQm4="
