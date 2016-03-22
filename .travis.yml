@@ -7,9 +7,11 @@ branches:
   only:
     - travis
 
-env:
-  - TZ="America/Los_Angeles"
-
 cache:
   directories:
     - $HOME/.m2
+
+before_install:
+  - export TZ="America/Los_Angeles"
+  - echo "MAVEN_OPTS='-DcheckedArithmetic=true'" > ~/.mavenrc
+  - date
