@@ -2,7 +2,11 @@
   <parent>
     <groupId>org.gosu-lang.gosu</groupId>
     <artifactId>gosu-parent</artifactId>
+<<<<<<< HEAD
     <version>1-spec-SNAPSHOT</version>
+=======
+    <version>1.13.5</version>
+>>>>>>> 63ae7e0... Change version
     <relativePath>../gosu-parent/pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -15,12 +19,20 @@
     <dependency>
       <groupId>org.gosu-lang.gosu</groupId>
       <artifactId>gosu-core-api</artifactId>
+<<<<<<< HEAD
       <version>1-spec-SNAPSHOT</version>
+=======
+      <version>1.13.5</version>
+>>>>>>> 63ae7e0... Change version
     </dependency>
     <dependency>
       <groupId>org.gosu-lang.gosu</groupId>
       <artifactId>gosu-core</artifactId>
+<<<<<<< HEAD
       <version>1-spec-SNAPSHOT</version>
+=======
+      <version>1.13.5</version>
+>>>>>>> 63ae7e0... Change version
       <scope>runtime</scope>
     </dependency>
     <dependency>
