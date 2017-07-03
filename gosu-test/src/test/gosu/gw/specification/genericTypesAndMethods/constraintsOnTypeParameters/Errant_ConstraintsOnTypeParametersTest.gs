@@ -19,7 +19,7 @@ class Errant_ConstraintsOnTypeParametersTest {
   static class C5<T1 extends T1> {}  //## issuekeys: MSG_CYCLIC_INHERITANCE
   static class C6<T1, T2 extends  T1> {}
   static class C62<T1, T2 extends  T2> {}  //## issuekeys: MSG_CYCLIC_INHERITANCE
-  static class C7<T1, T2 extends  T3, T3> {}  //## issuekeys: MSG_INVALID_TYPE
+  static class C7<T1, T2 extends  T3, T3> {}
 
   static class B<U> {}
   static class Z extends B<Z> {}
@@ -27,7 +27,7 @@ class Errant_ConstraintsOnTypeParametersTest {
   static class C8<T1 extends B<T1>> {}
   static class C9<T1, T2 extends B<T1>> {}
   static class C10<T1, T2 extends B<T2>> {}
-  static class C11<T1, T2 extends B<T3>, T3> {}  //## issuekeys: MSG_INVALID_TYPE
+  static class C11<T1, T2 extends B<T3>, T3> {}
 
   static class Z3 extends C12<Z3> {}
   static class Z4 extends C13<String, Z4> {}
@@ -37,9 +37,10 @@ class Errant_ConstraintsOnTypeParametersTest {
   static class C13<T1, T2 extends C13<T1, T2>> {}
   static class C131<T1, T2 extends C13<Object, Object>> {}  //## issuekeys: MSG_TYPE_PARAM_NOT_ASSIGNABLE_TO
   static class C14<T1, T2 extends C14<T2, T2>> {}
-  static class C15<T1, T2 extends C15<T3, T2, T3>, T3> {}  //## issuekeys: MSG_INVALID_TYPE, MSG_INVALID_TYPE
+  static class C15<T1, T2 extends C15<T3, T2, T3>, T3> {}
 
   static class M extends Integer[] {}  //## issuekeys: MSG_CANNOT_EXTEND_ARRAY, MSG_CANNOT_EXTEND_FINAL_TYPE
+  static class M2 implements Integer[] {}  //## issuekeys: MSG_CLASS_CANNOT_IMPLEMENT_CLASS, MSG_CANNOT_EXTEND_FINAL_TYPE
   static class C16<T1 extends Number> {}
   static class C17<T1 extends Object[]> {}
   static class C171<T1 extends int[]> {}
@@ -58,7 +59,7 @@ class Errant_ConstraintsOnTypeParametersTest {
     new C1<A1, Integer>()
     new C1<A0, Integer>()  //## issuekeys: MSG_TYPE_PARAM_NOT_ASSIGNABLE_TO
     new C3<A3, Integer>()
-    new C3<A0, Integer>()   //## KB(PL-34008)
+    new C3<A0, Integer>()
     new C6<A0, B0>()
     new C8<Z>()
     new C9<Z, Z>()
@@ -80,6 +81,20 @@ class Errant_ConstraintsOnTypeParametersTest {
     new C19<A0>()  //## issuekeys: MSG_TYPE_PARAM_NOT_ASSIGNABLE_TO
     new C19<A2>()  //## issuekeys: MSG_TYPE_PARAM_NOT_ASSIGNABLE_TO
     new C19<F>()
-    new C22<A0, F>()   //## issuekeys: MSG_TYPE_PARAM_NOT_ASSIGNABLE_TO
+  }
+
+  // IDE-1194
+  static class Foo {
+    interface AnInterface {}
+    interface BInterface {}
+    class A {}
+    class B {}
+
+    var a: AnInterface & BInterface & A & B      //## issuekeys: MSG_ONLY_ONE_CLASS_IN_COMPONENT_TYPE
+    function foo<T extends AnInterface & BInterface & A & B> (t1 : T, t2 : T) {}      //## issuekeys: MSG_ONLY_ONE_CLASS_IN_COMPONENT_TYPE
+    function foo1<T extends AnInterface & BInterface & A> (t1 : T, t2 : T) {}
+    function foo2<T extends AnInterface & A & BInterface> (t1 : T, t2 : T) {}
+    function foo3<T extends A & AnInterface & BInterface> (t1 : T, t2 : T) {}
+    class Test<T extends AnInterface & BInterface & A & B> {}      //## issuekeys: MSG_ONLY_ONE_CLASS_IN_COMPONENT_TYPE
   }
 }

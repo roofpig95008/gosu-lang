@@ -45,7 +45,7 @@ class Errant_BlocksGenericsWithoutParams {
       return {42, 1b}
     })
     var x1217: ArrayList = hello1(\-> {
-      return {42, 1s}
+      return {42, 1 as short}
     })
     var x1218: ArrayList = hello1(\-> {
       return {42, 'c', 42.5f}
@@ -63,7 +63,6 @@ class Errant_BlocksGenericsWithoutParams {
     var x1314: ArrayList<Integer> = hello1(\-> {
       return {1, 2, 3}
     })
-    //IDE-1346 will not be fixed. Both OS Gosu and Parser show error. Impacts x1315, x1316, x1317. Keeping the errors
     var x1315: ArrayList<Integer> = hello1(\-> {
       return {42, 'c'}
     })
@@ -71,7 +70,7 @@ class Errant_BlocksGenericsWithoutParams {
       return {42, 1b}
     })
     var x1317: ArrayList<Integer> = hello1(\-> {
-      return {42, 1s}
+      return {42, 1 as short}
     })
 
     var x1318: ArrayList<Integer> = hello1(\-> { return {42, 'c', 42.5f} })    //## issuekeys: MSG_TYPE_MISMATCH

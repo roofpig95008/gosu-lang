@@ -32,7 +32,7 @@ class Errant_DoubleInterval {
   //Lower end point is double. upper limit various types
   var double1111 = (42.5..'c')
   var double1112 = (42.5..1b)
-  var double1113 = (42.5..1s)
+  var double1113 = (42.5..1 as short)
   var double1114 = (42.5..10)
   var double1115 = (42.5..10L)
   var double1116 = (42.5..10.5f)
@@ -42,12 +42,13 @@ class Errant_DoubleInterval {
   var double1120 = (42.5.."mystring")      //## issuekeys: OPERATOR '..' CANNOT BE APPLIED TO 'DOUBLE', 'JAVA.LANG.STRING'
   var double1121 = (42.5..(new Date()))      //## issuekeys: OPERATOR '..' CANNOT BE APPLIED TO 'DOUBLE', 'JAVA.UTIL.DATE'
   var double1122 = (42.5..aaa)      //## issuekeys: OPERATOR '..' CANNOT BE APPLIED TO 'DOUBLE', 'GW.SPECCONTRIB.AAA.PARSERVSOPENSOURCE.INTERVALSANDDIMENSIONS.INTERVALSBASIC.INTERVAL_DOUBLE.A'
+  var double1123 = (42.5..false)      //## issuekeys: OPERATOR '..' CANNOT BE APPLIED TO 'DOUBLE', 'BOOLEAN'
 
   //Lower end point is double with step function
   var double1211 = (42.5..'c').step(1)
   var double1212 = (42.5..1b).step(1)
   //IDE-1282
-  var double1213 = (42.5..1s).step(1)
+  var double1213 = (42.5..1 as short).step(1)
   var double1214 = (42.5..10).step(1)
   var double1215 = (42.5..10L).step(1)
   var double1216 = (42.5..10.5f).step(1)
@@ -62,7 +63,7 @@ class Errant_DoubleInterval {
   //Both end points are 'double' but step function has parameter of different type
   var double1311 = (42.5..43.5).step('c')
   var double1312 = (42.5..43.5).step(1b)
-  var double1313 = (42.5..43.5).step(1s)
+  var double1313 = (42.5..43.5).step(1 as short)
   var double1314 = (42.5..43.5).step(42)
   var double1315 = (42.5..43.5).step(42.5f)
   var double1316 = (42.5..43.5).step(42L)
@@ -79,7 +80,7 @@ class Errant_DoubleInterval {
     }
     for (i in (42.5..1b)) {
     }
-    for (i in (42.5..1s)) {
+    for (i in (42.5..1 as short)) {
     }
     for (i in (42.5..10)) {
     }

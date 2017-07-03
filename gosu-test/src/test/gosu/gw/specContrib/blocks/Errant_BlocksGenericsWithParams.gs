@@ -110,7 +110,7 @@ class Errant_BlocksGenericsWithParams {
       return {1, 2, 3b}
     })
     var x13239: ArrayList<Integer> = hello1(\x: ArrayList<Integer> -> {
-      return {1, 2, 3s}
+      return {1, 2, 3 as short}
     })
 
     var x13240: ArrayList<Integer> = hello1(\x: ArrayList<Integer> -> { return {1, 2, 'c', "string"} })  //## issuekeys: MSG_TYPE_MISMATCH
@@ -119,8 +119,10 @@ class Errant_BlocksGenericsWithParams {
     var x13241: ArrayList<Integer> = hello1(\x: ArrayList -> {
       return new ArrayList<Integer>()
     })
-
-    var x13242: ArrayList<Integer> = hello1(\x: ArrayList<Integer> -> { return new ArrayList() })
+    // Gosu compiler no longer gives an error on this line:
+    var x13242: ArrayList<Integer> = hello1(\x: ArrayList<Integer> -> { return new ArrayList() }) 
+    //IDE-1344 - Gosu gives no error on this line either
+    var x: Integer = hello1(\a: java.lang.Number -> 0)
 
   }
 
