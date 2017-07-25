@@ -24,13 +24,13 @@ class Errant_JavaGetterSetterInParentChild {
     print(xx.Name)
     xx.Name = "sdf"
     print(xx.Name2)
-    xx.Name2 = "sdf"      //## issuekeys: PROPERTY 'NAME2' IS NOT WRITABLE
-    print(xx.name2)      //## issuekeys: CANNOT RESOLVE SYMBOL 'NAME2'
-    xx.name2 = "sdf"      //## issuekeys: CANNOT RESOLVE SYMBOL 'NAME2'
+    xx.Name2 = "sdf"      //## put issue key here: PROPERTY 'NAME2' IS NOT WRITABLE
+    print(xx.name2)      //## put issue key here: CANNOT RESOLVE SYMBOL 'NAME2'
+    xx.name2 = "sdf"      //## put issue key here: CANNOT RESOLVE SYMBOL 'NAME2'
     print(xx.Name3)
-    xx.Name3 = "sdf"      //## issuekeys: PROPERTY 'NAME3' IS NOT WRITABLE
+    xx.Name3 = "sdf"      //## put issue key here: PROPERTY 'NAME3' IS NOT WRITABLE
     print(xx.Name4)
-    xx.Name4 = "sdf"      //## issuekeys: PROPERTY 'NAME4' IS NOT WRITABLE
+    xx.Name4 = "sdf"      //## put issue key here: PROPERTY 'NAME4' IS NOT WRITABLE
    }
    */
 }
