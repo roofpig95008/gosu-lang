@@ -2,7 +2,7 @@ package gw.specContrib.typeinference
 
 // IDE-4166
 
-class Errant_AvoidInferenceOnRootOfMemberAccess {
+class Errant_DiamondInference {
 
     function hello<T>(t : T) : T { return null}
 
